@@ -3,6 +3,7 @@ package com.mohdsohel.CloudNest.advices;
 
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -26,8 +27,18 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
                 .stream()
                 .anyMatch(route -> request.getURI().getPath().contains(route));
 
+        // Don't wrap Resource responses
+        if (body instanceof Resource) {
+            return body;
+        }
+
         if (body instanceof ApiResponse<?>)
             return body;
+
+        // Don't wrap allowed routes
+        if (isAllowed) {
+            return body;
+        }
 
         return new ApiResponse<>(body);
     }

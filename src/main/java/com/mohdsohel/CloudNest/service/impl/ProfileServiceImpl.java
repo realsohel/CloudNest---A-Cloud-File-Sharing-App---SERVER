@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -90,6 +92,19 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public boolean existsByClerkId(String clerkId) {
         return profileRepository.existsByClerkId(clerkId);
+    }
+
+    @Override
+    public ProfileDocument getProfile() {
+
+        if(SecurityContextHolder.getContext().getAuthentication()==null){
+            throw new UsernameNotFoundException("User not authenticated");
+        }
+
+        System.out.println("Security Context: " + SecurityContextHolder.getContext().getAuthentication().getName());
+
+        String clerkId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return profileRepository.findByClerkId(clerkId);
     }
 
 }
