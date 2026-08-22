@@ -121,7 +121,10 @@ public class FileMetadataServiceImpl implements FileMetadataService {
     @Override
     public FileDto getDownloadableFile(String fileId) {
 
-        FileDto file = getPublicFile(fileId);
+        FileMetadataDocument fileMetadataDocument = fileMetadataRepository.findById(fileId).orElseThrow(
+                ()-> new ResourceNotFoundException("File not found")
+        );
+        FileDto file = modelMapper.map(fileMetadataDocument,FileDto.class);
 
         Path path = Paths.get(file.getFileLocation());
 

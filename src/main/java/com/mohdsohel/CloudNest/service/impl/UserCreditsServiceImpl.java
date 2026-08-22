@@ -53,4 +53,15 @@ public class UserCreditsServiceImpl implements UserCreditsService {
         userCredits.setCredits(userCredits.getCredits() - 1);
         return  userCreditsRepository.save(userCredits);
     }
+
+    @Override
+    public UserCredits addCredits(String clerkId, Integer creditsToAdd, Plans plans) {
+        UserCredits userCredits = userCreditsRepository.findByClerkId(clerkId)
+                .orElseGet(()-> createInitialCredits(clerkId));
+
+        userCredits.setCredits(userCredits.getCredits() + creditsToAdd);
+        userCredits.setPlans(plans);
+
+        return userCreditsRepository.save(userCredits);
+    }
 }

@@ -101,7 +101,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new UsernameNotFoundException("User not authenticated");
         }
 
-        System.out.println("Security Context: " + SecurityContextHolder.getContext().getAuthentication().getName());
+//        System.out.println("Security Context: " + SecurityContextHolder.getContext().getAuthentication().getName());
 
         String clerkId = SecurityContextHolder.getContext().getAuthentication().getName();
         return profileRepository.findByClerkId(clerkId);

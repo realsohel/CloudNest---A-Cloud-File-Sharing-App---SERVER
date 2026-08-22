@@ -22,9 +22,9 @@ public class ProfileController {
         return new ResponseEntity<>(profile, status);
     }
 
-//    @DeleteMapping("/delete-profile/{clerkId}")
-//    public ResponseEntity<> deleteProfile(@PathVariable String clerkId){
-//        profileService.deleteProfile(clerkId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    @DeleteMapping("/delete-profile/{clerkId}")
+    public ResponseEntity<?> deleteProfile(@PathVariable String clerkId){
+        profileService.deleteProfile(clerkId);
+        return ResponseEntity.noContent().build();
+    }
 }
